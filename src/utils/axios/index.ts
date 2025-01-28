@@ -15,23 +15,26 @@ const formatUrl = (url: string, params?: { [key: string]: string }): string => {
   return url.replace(re, (...matches) => `/${params[matches[1]]}${matches[2]}`);
 };
 
-const apiRequest = async (config: ApiRequestConfig) => {
-  try {
-    const { url, urlParams, headers } = config;
+const createApiRequest = (base: string) => {
+  return async (config: ApiRequestConfig) => {
+    try {
+      const { url, urlParams, headers } = config;
+      const fullUrl = `${base}${url}`;
 
-    config.url = formatUrl(url, urlParams);
-    config.headers = { ...headers };
+      config.url = formatUrl(fullUrl, urlParams || {});
+      config.headers = { ...headers };
 
-    const response = await axiosInstance.request(config);
-    return response.data;
-  } catch (err: any) {
-    const errorResponse: ErrorResponse = {
-      subStatusCode: err.response?.subStatusCode,
-      status: err.response?.status || 500,
-      message: err.response?.data?.message || 'An unexpected error occurred',
-    };
-    return Promise.reject(errorResponse);
-  }
+      const response = await axiosInstance.request(config);
+      return response.data;
+    } catch (err: any) {
+      const errorResponse: ErrorResponse = {
+        subStatusCode: err.response?.subStatusCode,
+        status: err.response?.status || 500,
+        message: err.response?.data?.message || 'An unexpected error occurred',
+      };
+      return Promise.reject(errorResponse);
+    }
+  };
 };
 
-export default apiRequest;
+export default createApiRequest;

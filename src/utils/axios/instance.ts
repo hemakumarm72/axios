@@ -6,19 +6,20 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from 'axios';
-import { refreshAccessToken } from '@/utils/axios/common';
+import * as authApi from '@/utils/axios/auth';
 
 let isRefreshing = false;
 let failedRequestsQueue: any[] = [];
 
-const baseURL = process.env.VITE_APP_API_SERVER || 'http://localhost:3000/api';
+const baseURL =
+  process.env.VITE_APP_API_SERVER || 'http://localhost:3000/api/user';
 const instance: AxiosInstance = axios.create({ baseURL });
 
 instance.defaults.headers.post['Content-Type'] = 'application/json';
 
 const handleTokenRefresh = async (refreshToken: string): Promise<string> => {
   try {
-    const { result } = await refreshAccessToken(refreshToken);
+    const { result } = await authApi.refreshAccessToken(refreshToken);
     setCookies('accessToken', result.accessToken);
     setCookies('refreshToken', result.refreshToken);
     return result.accessToken;
