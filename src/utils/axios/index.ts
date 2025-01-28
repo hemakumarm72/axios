@@ -30,7 +30,8 @@ const createApiRequest = (base: string) => {
       const errorResponse: ErrorResponse = {
         subStatusCode: err.response?.subStatusCode,
         status: err.response?.status || 500,
-        message: err.response?.data?.message || 'An unexpected error occurred',
+        message:
+          err.response?.data?.errorMessage || 'An unexpected error occurred',
       };
       return Promise.reject(errorResponse);
     }

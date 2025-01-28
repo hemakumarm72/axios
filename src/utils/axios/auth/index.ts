@@ -1,4 +1,6 @@
 import createApiRequest from '@/utils/axios';
+import { AuthResponse, AuthResponseSchema } from './auth.validation';
+import { validateResponse } from '@/utils/validation';
 
 const apiRequest = createApiRequest('/auth');
 
@@ -12,7 +14,7 @@ export const login = async (
       data: { email, password },
       url: '/login',
     });
-
+    validateResponse(result, AuthResponseSchema);
     return result;
   } catch (err) {
     return Promise.reject(err);

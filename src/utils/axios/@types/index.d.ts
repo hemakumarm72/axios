@@ -1,15 +1,3 @@
-type BaseResponse<T> = {
-  success: boolean;
-  result: T;
-};
-
-type Token = {
-  accessToken: string;
-  refreshToken: string;
-};
-
-type AuthResponse = BaseResponse<Token>;
-
 type ErrorRes = {
   subStatus: string;
   message: string;
@@ -50,3 +38,9 @@ type ErrorResponse = {
   message: string;
   data?: any;
 };
+
+type Token = {
+  accessToken: string;
+  refreshToken: string;
+};
+

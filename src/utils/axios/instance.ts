@@ -12,7 +12,7 @@ let isRefreshing = false;
 let failedRequestsQueue: any[] = [];
 
 const baseURL =
-  process.env.VITE_APP_API_SERVER || 'http://localhost:3000/api/user';
+  import.meta.env.VITE_APP_API_SERVER || 'http://localhost:3000/api/user';
 const instance: AxiosInstance = axios.create({ baseURL });
 
 instance.defaults.headers.post['Content-Type'] = 'application/json';
